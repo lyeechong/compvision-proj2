@@ -5,7 +5,7 @@ In this project, you'll extract dense 3D information from stereo image pairs.
 
 import cv2
 import math
-import numpy
+import numpy as np
 
 
 def rectify_pair(image_left, image_right, viz=False):
@@ -19,7 +19,15 @@ def rectify_pair(image_left, image_right, viz=False):
       H_left, H_right: homographies that warp the left and right image so
         their epipolar lines are corresponding rows.
     """
-    pass
+    
+    print image_left.shape
+    
+    image_a_points, image_b_points = find_feature_points(image_left, image_right)
+    fundamental_mat, fundamental_mask = cv2.findFundamentalMat(image_a_points, image_b_points, cv2.RANSAC)    
+    imsize = (image_right.shape[1], image_right.shape[0])
+    rectification_transform, H1, H2 = cv2.stereoRectifyUncalibrated(image_a_points, image_b_points, fundamental_mat, imsize, np.zeros().reshape(), _, 0.5)
+    
+    return fundamental_mat, H1, H2
 
 
 def disparity_map(image_left, image_right):
@@ -50,7 +58,7 @@ def point_cloud(disparity_image, image_left, focal_length):
     """
     pass
 
-def find_fundamental_mat(image_a, image_b):
+def find_feature_points(image_a, image_b):
     sift = cv2.SIFT()
     # detect feature points in each image
     kp_a, des_a = sift.detectAndCompute(image_a, None)
@@ -73,5 +81,5 @@ def find_fundamental_mat(image_a, image_b):
         [kp_b[m.queryIdx].pt for (m, _) in matches]).reshape(-1, 1, 2)
     
     # find fundamental mat    
-    retval, mask = cv2.findFundamentalMat(image_a_points, image_b_points)
+    return image_a_points, image_b_points
     
