@@ -20,12 +20,11 @@ def rectify_pair(image_left, image_right, viz=False):
         their epipolar lines are corresponding rows.
     """
     
-    print image_left.shape
-    
     image_a_points, image_b_points = find_feature_points(image_left, image_right)
     fundamental_mat, fundamental_mask = cv2.findFundamentalMat(image_a_points, image_b_points, cv2.RANSAC)    
     imsize = (image_right.shape[1], image_right.shape[0])
-    rectification_transform, H1, H2 = cv2.stereoRectifyUncalibrated(image_a_points, image_b_points, fundamental_mat, imsize, np.zeros(9).reshape(3,3), np.zeros(9).reshape(3,3), 0.5)
+    #rectification_transform, H1, H2 = cv2.stereoRectifyUncalibrated(image_a_points, image_b_points, fundamental_mat, imsize, np.zeros(9).reshape(3,3), np.zeros(9).reshape(3,3), 0.05)
+    rectification_transform, H1, H2 = cv2.stereoRectifyUncalibrated(image_a_points, image_b_points, fundamental_mat, imsize)
     
     return fundamental_mat, H1, H2
 
