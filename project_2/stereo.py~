@@ -75,4 +75,3 @@ def find_fundamental_mat(image_a, image_b):
     # find fundamental mat    
     retval, mask = cv2.findFundamentalMat(image_a_points, image_b_points)
     
-    
