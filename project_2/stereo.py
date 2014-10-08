@@ -115,7 +115,16 @@ def point_cloud(disparity_image, image_left, focal_length):
     colors = out_colors.reshape(-1, 3)
     verts = np.hstack([verts, colors])
 
-    return ply_header % dict(vert_num=len(verts))
+    result = ply_header % dict(vert_num=len(verts))
+    for vert in verts:
+        result += "%f " % vert[0]
+        result += "%f " % vert[1]
+        result += "%f " % vert[2]
+        result += "%d " % vert[3]
+        result += "%d " % vert[4]
+        result += "%d\n" % vert[5]
+
+    return result
 
 
 def find_feature_points(image_a, image_b):
