@@ -91,6 +91,7 @@ class TestStereo(unittest.TestCase):
         # should be less than the specified threshold.
         differences = disparity_diff.flatten().tolist()
         median_diff = sorted(differences)[len(differences) / 2]
+        print "median ", median_diff
         self.assertLessEqual(median_diff, 5)
 
     def test_point_cloud(self):

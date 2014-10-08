@@ -7,6 +7,7 @@ import math
 import numpy as np
 import stereo
 
+
 def warp_image(image, homography):
     """Warps 'image' by 'homography'
 

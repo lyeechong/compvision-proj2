@@ -19,13 +19,13 @@ def rectify_pair(image_left, image_right, viz=False):
       H_left, H_right: homographies that warp the left and right image so
         their epipolar lines are corresponding rows.
     """
-    
+
     image_a_points, image_b_points = find_feature_points(image_left, image_right)
 
-    fundamental_mat, mask = cv2.findFundamentalMat(image_a_points, image_b_points, cv2.RANSAC)    
+    fundamental_mat, mask = cv2.findFundamentalMat(image_a_points, image_b_points, cv2.RANSAC)
     imsize = (image_right.shape[1], image_right.shape[0])
-    image_a_points = image_a_points[mask.ravel()==1]
-    image_b_points = image_b_points[mask.ravel()==1]
+    image_a_points = image_a_points[mask.ravel() == 1]
+    image_b_points = image_b_points[mask.ravel() == 1]
     
     #rectification_transform, H1, H2 = cv2.stereoRectifyUncalibrated(image_a_points, image_b_points, fundamental_mat, imsize, np.zeros(9).reshape(3,3), np.zeros(9).reshape(3,3), 0.05)
     rectification_transform, H1, H2 = cv2.stereoRectifyUncalibrated(image_a_points, image_b_points, fundamental_mat, imsize)
@@ -43,18 +43,28 @@ def disparity_map(image_left, image_right):
       an single-channel image containing disparities in pixels,
         with respect to image_left's input pixels.
     """
+    sbm = cv2.StereoSGBM()
+    sbm.SADWindowSize = 3;
+    sbm.numberOfDisparities = 96
+    sbm.preFilterCap = 0;
+    sbm.minDisparity = 16;
+    sbm.uniquenessRatio = 15;
+    sbm.speckleWindowSize = 100;
+    sbm.speckleRange = 32;
+    sbm.disp12MaxDiff = 1;
+    sbm.fullDP = False;
+    sbm.P1 = 8*image_left.shape[2]*(sbm.SADWindowSize**2)
+    sbm.P2 = 32*image_left.shape[2]*(sbm.SADWindowSize**2)
 
-    # image_left = np.uint8(image_left) / 256
-    # image_right = np.uint8(image_right) / 256
+    disparity = sbm.compute(image_left, image_right)
 
-    # image_left = cv2.cvtColor(image_left, 6)
-    # image_right = cv2.cvtColor(image_right, 6)
+    print type(disparity[0][0])
 
-    #height, width, _ = image_left.shape
-    #disparity = np.zeros(height * width).reshape(height, width)
+    disparity_visual = cv2.normalize(disparity, alpha=0, beta=255, norm_type=cv2.cv.CV_MINMAX, dtype=cv2.cv.CV_8U)
+    cv2.imshow("sbm", disparity_visual)
+    cv2.waitKey(4000)
 
-    return cv2.StereoBM().compute(image_left, image_right)
-
+    return disparity_visual
 
 def point_cloud(disparity_image, image_left, focal_length):
     """Create a point cloud from a disparity image and a focal length.
