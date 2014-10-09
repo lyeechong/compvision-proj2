@@ -24,7 +24,7 @@ if __name__ == '__main__':
     print disparity_expected
 
     # Compute disparity using the function under test.
-    disparity = stereo.disparity_map(left, right)
+    disparity = stereo.disparity_map_with_params(left, right, (5, 128, 70, 8, 11, 160, 13, 4, 27, 183))
 
     print disparity
 

@@ -73,6 +73,7 @@ def disparity_map(image_left, image_right):
       an single-channel image containing disparities in pixels,
         with respect to image_left's input pixels.
     """
+    
     sbm = cv2.StereoSGBM()
     sbm.SADWindowSize = 3
     sbm.numberOfDisparities = 96
