@@ -21,20 +21,21 @@ def rectify_pair(image_left, image_right, viz=False):
     """
 
     image_a_points, image_b_points = find_feature_points(image_left,
-                                                        image_right)
+                                                         image_right)
 
-    fundamental_mat, mask = cv2.findFundamentalMat(image_a_points,
-                                image_b_points, cv2.RANSAC)
+    f_mat, mask = cv2.findFundamentalMat(image_a_points,
+                                         image_b_points,
+                                         cv2.RANSAC)
     imsize = (image_right.shape[1], image_right.shape[0])
     image_a_points = image_a_points[mask.ravel() == 1]
     image_b_points = image_b_points[mask.ravel() == 1]
 
-    rectification_transform, H1, H2 = cv2.stereoRectifyUncalibrated(
-                                        image_a_points,
-                                        image_b_points,
-                                        fundamental_mat, imsize)
+    _, H1, H2 = cv2.stereoRectifyUncalibrated(image_a_points,
+                                              image_b_points,
+                                              f_mat, imsize)
 
-    return fundamental_mat, H1, H2
+    return f_mat, H1, H2
+
 
 def disparity_map_with_params(image_left, image_right, weights):
     """For genetic algo
@@ -53,15 +54,18 @@ def disparity_map_with_params(image_left, image_right, weights):
     sbm.P2 = 32 * image_left.shape[2] * (sbm.SADWindowSize ** 2)
 
     disparity = sbm.compute(image_left, image_right)
-    #print type(disparity[0][0])
+    # print type(disparity[0][0])
 
     disparity_visual = cv2.normalize(disparity,
-        alpha=weights[8], beta=weights[9], norm_type=cv2.cv.CV_MINMAX,
-        dtype=cv2.cv.CV_8U)
-    #cv2.imshow("sbm", disparity_visual)
-    #cv2.waitKey(4000)
+                                     alpha=weights[8],
+                                     beta=weights[9],
+                                     norm_type=cv2.cv.CV_MINMAX,
+                                     dtype=cv2.cv.CV_8U)
+    # cv2.imshow("sbm", disparity_visual)
+    # cv2.waitKey(4000)
 
     return disparity_visual
+
 
 def disparity_map(image_left, image_right):
     """Compute the disparity images for image_left and image_right.
@@ -73,7 +77,7 @@ def disparity_map(image_left, image_right):
       an single-channel image containing disparities in pixels,
         with respect to image_left's input pixels.
     """
-    
+
     sbm = cv2.StereoSGBM()
     sbm.SADWindowSize = 3
     sbm.numberOfDisparities = 96
@@ -88,13 +92,15 @@ def disparity_map(image_left, image_right):
     sbm.P2 = 32 * image_left.shape[2] * (sbm.SADWindowSize ** 2)
 
     disparity = sbm.compute(image_left, image_right)
-    #print type(disparity[0][0])
+    # print type(disparity[0][0])
 
     disparity_visual = cv2.normalize(disparity,
-        alpha=23, beta=50, norm_type=cv2.cv.CV_MINMAX,
-        dtype=cv2.cv.CV_8U)
-    #cv2.imshow("sbm", disparity_visual)
-    #cv2.waitKey(4000)
+                                     alpha=23,
+                                     beta=50,
+                                     norm_type=cv2.cv.CV_MINMAX,
+                                     dtype=cv2.cv.CV_8U)
+    # cv2.imshow("sbm", disparity_visual)
+    # cv2.waitKey(4000)
 
     return disparity_visual
 
@@ -178,4 +184,4 @@ def find_feature_points(image_a, image_b):
 
     # find fundamental mat
     return image_a_points, image_b_points
-    #return np.int32(image_a_points), np.int32(image_b_points)
+    # return np.int32(image_a_points), np.int32(image_b_points)
