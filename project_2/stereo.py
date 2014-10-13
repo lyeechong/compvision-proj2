@@ -80,14 +80,14 @@ def disparity_map(image_left, image_right):
 
     sbm = cv2.StereoSGBM()
     sbm.SADWindowSize = 3
-    sbm.numberOfDisparities = 96
-    sbm.preFilterCap = 0
-    sbm.minDisparity = 16
-    sbm.uniquenessRatio = 15
-    sbm.speckleWindowSize = 100
-    sbm.speckleRange = 32
+    sbm.numberOfDisparities = 256
+    sbm.preFilterCap = 16
+    sbm.minDisparity = 2
+    sbm.uniquenessRatio = 10
+    sbm.speckleWindowSize = 150
+    sbm.speckleRange = 1
     sbm.disp12MaxDiff = 1
-    sbm.fullDP = False
+    sbm.fullDP = True
     sbm.P1 = 8 * image_left.shape[2] * (sbm.SADWindowSize ** 2)
     sbm.P2 = 32 * image_left.shape[2] * (sbm.SADWindowSize ** 2)
 
@@ -95,12 +95,12 @@ def disparity_map(image_left, image_right):
     # print type(disparity[0][0])
 
     disparity_visual = cv2.normalize(disparity,
-                                     alpha=23,
-                                     beta=50,
+                                     alpha=0,
+                                     beta=255,
                                      norm_type=cv2.cv.CV_MINMAX,
                                      dtype=cv2.cv.CV_8U)
-    # cv2.imshow("sbm", disparity_visual)
-    # cv2.waitKey(4000)
+    cv2.imshow("sbm", disparity_visual)
+    cv2.waitKey(4000)
 
     return disparity_visual
 
