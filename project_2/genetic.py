@@ -34,7 +34,7 @@ def test_weights(left, right):
     return sorted_swag[0], swag[sorted_swag[0]] # list of weights, median
 
 def repeat(left, right):
-    num_repeat = 500
+    num_repeat = 5
     curr_best_median = 9001
     curr_best_weights = []
     for x in range(0,num_repeat):
