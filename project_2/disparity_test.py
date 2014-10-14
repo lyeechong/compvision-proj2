@@ -7,9 +7,9 @@ import unittest
 
 if __name__ == '__main__':
     # Change the directory to the images we want to test on
-    #directory = 'Aloe'
+    directory = 'Aloe'
     #directory = 'Baby1'
-    directory = 'Plastic'
+    #directory = 'Plastic'
     
     # If you want the images to show
     showImages = True
