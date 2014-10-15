@@ -154,4 +154,3 @@ def find_feature_points(image_a, image_b):
 
     # find fundamental mat
     return image_a_points, image_b_points
-    # return np.int32(image_a_points), np.int32(image_b_points)
