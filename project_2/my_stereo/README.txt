@@ -1,0 +1,1 @@
+Just run "python my_stereo.py"

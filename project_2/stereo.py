@@ -92,15 +92,12 @@ def disparity_map(image_left, image_right):
     sbm.P2 = 32 * image_left.shape[2] * (sbm.SADWindowSize ** 2)
 
     disparity = sbm.compute(image_left, image_right)
-    # print type(disparity[0][0])
 
     disparity_visual = cv2.normalize(disparity,
                                      alpha=0,
                                      beta=255,
                                      norm_type=cv2.cv.CV_MINMAX,
                                      dtype=cv2.cv.CV_8U)
-    cv2.imshow("sbm", disparity_visual)
-    cv2.waitKey(4000)
 
     return disparity_visual
 

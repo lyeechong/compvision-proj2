@@ -49,16 +49,16 @@ def disparity_map(image_left, image_right):
     """
 
     sbm = cv2.StereoSGBM()
-    sbm.SADWindowSize = 1
-    sbm.numberOfDisparities = 256
+    sbm.SADWindowSize = 7
+    sbm.numberOfDisparities = 320
     sbm.preFilterCap = 0
     sbm.minDisparity = 0
     sbm.uniquenessRatio = 1
-    sbm.speckleWindowSize = 150
-    sbm.speckleRange = 1
+    sbm.speckleWindowSize = 10
+    sbm.speckleRange = 5
     sbm.disp12MaxDiff = 1
     sbm.fullDP = True
-    sbm.P1 = 8 * image_left.shape[2] * (sbm.SADWindowSize ** 2)
+    sbm.P1 = 16 * image_left.shape[2] * (sbm.SADWindowSize ** 2)
     sbm.P2 = 32 * image_left.shape[2] * (sbm.SADWindowSize ** 2)
 
     disparity = sbm.compute(image_left, image_right)
@@ -69,8 +69,8 @@ def disparity_map(image_left, image_right):
                                      beta=255,
                                      norm_type=cv2.cv.CV_MINMAX,
                                      dtype=cv2.cv.CV_8U)
-    # cv2.imshow("sbm", disparity_visual)
-    # cv2.waitKey(4000)
+    cv2.imshow("sbm", disparity_visual)
+    cv2.waitKey(4000)
 
     return disparity_visual
 
@@ -144,7 +144,7 @@ def find_feature_points(image_a, image_b):
     matches = flann.knnMatch(des_b, des_a, k=2)
 
     # Filter out outliers
-    filter_fn = lambda (m, n): m.distance < 0.7 * n.distance
+    filter_fn = lambda (m, n): m.distance < 0.85 * n.distance
     matches = filter(filter_fn, matches)
 
     image_a_points = np.float32(
