@@ -13,7 +13,7 @@ disparity = stereo.disparity_map(left, right)
 cv2.imshow('disparity', disparity)
 cv2.waitKey(5000)
 
-colors = left 
+colors = left
 focal_length = 5
 
 ply_string = stereo.point_cloud(disparity, colors, focal_length)
