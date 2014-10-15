@@ -69,8 +69,8 @@ def disparity_map(image_left, image_right):
                                      beta=255,
                                      norm_type=cv2.cv.CV_MINMAX,
                                      dtype=cv2.cv.CV_8U)
-    cv2.imshow("sbm", disparity_visual)
-    cv2.waitKey(4000)
+    # cv2.imshow("sbm", disparity_visual)
+    # cv2.waitKey(4000)
 
     return disparity_visual
 
@@ -144,7 +144,7 @@ def find_feature_points(image_a, image_b):
     matches = flann.knnMatch(des_b, des_a, k=2)
 
     # Filter out outliers
-    filter_fn = lambda (m, n): m.distance < 0.85 * n.distance
+    filter_fn = lambda (m, n): m.distance < 0.7 * n.distance
     matches = filter(filter_fn, matches)
 
     image_a_points = np.float32(

@@ -1,12 +1,13 @@
 import stereo
 import cv2
+import numpy as np
 
-print 'start'
+left = cv2.imread('4l.jpg')
+right = cv2.imread('4r.jpg')
 
-left = cv2.imread('my_left.jpg')
-right = cv2.imread('my_right.jpg')
 disparity = stereo.disparity_map(left, right)
+cv2.imwrite('disparity.png', disparity)
 
-print "disparity"
-
-# cv2.imshow('disparity', disparity)
+cloud = stereo.point_cloud(disparity, right, -3)
+with open("cloud.ply", 'w') as f:
+    f.write(cloud)
