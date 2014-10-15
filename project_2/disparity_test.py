@@ -8,9 +8,7 @@ import unittest
 if __name__ == '__main__':
     # Change the directory to the images we want to test on
     directory = 'Aloe'
-    #directory = 'Baby1'
-    #directory = 'Plastic'
-    
+
     # If you want the images to show
     showImages = True
 
@@ -18,13 +16,17 @@ if __name__ == '__main__':
     right = cv2.imread('disparity_test_data/' + directory + '/view5.png')
 
     # Load the ground-truth disparity map.
-    disparity_expected = cv2.imread('disparity_test_data/' + directory + '/disp1.png',
-                                  cv2.CV_LOAD_IMAGE_GRAYSCALE)
+    disparity_expected = cv2.imread('disparity_test_data/' +
+                                    directory +
+                                    '/disp1.png',
+                                    cv2.CV_LOAD_IMAGE_GRAYSCALE)
 
     print disparity_expected
 
     # Compute disparity using the function under test.
-    disparity = stereo.disparity_map_with_params(left, right, (5, 128, 70, 8, 11, 160, 13, 4, 27, 183))
+    disparity = stereo.disparity_map_with_params(left, right,
+                                                 (9, 112, 107, 9,
+                                                  5, 167, 22, 12, 25, 195))
 
     print disparity
 
