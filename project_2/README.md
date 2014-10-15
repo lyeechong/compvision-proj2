@@ -1,6 +1,6 @@
 # Write up
 ## Group members
-- Jeffrey Tang
+- Jeffrey Tang - jft234 - jeffreyftang@gmail.com
 - Tim Sherlock
 - Lyee Chong - lsc568 - lyeechong@gmail.com
 
