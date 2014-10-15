@@ -37,36 +37,6 @@ def rectify_pair(image_left, image_right, viz=False):
     return f_mat, H1, H2
 
 
-def disparity_map_with_params(image_left, image_right, weights):
-    """For genetic algo
-    """
-    sbm = cv2.StereoSGBM()
-    sbm.SADWindowSize = weights[0]
-    sbm.numberOfDisparities = weights[1]
-    sbm.preFilterCap = weights[2]
-    sbm.minDisparity = weights[3]
-    sbm.uniquenessRatio = weights[4]
-    sbm.speckleWindowSize = weights[5]
-    sbm.speckleRange = weights[6]
-    sbm.disp12MaxDiff = weights[7]
-    sbm.fullDP = False
-    sbm.P1 = 8 * image_left.shape[2] * (sbm.SADWindowSize ** 2)
-    sbm.P2 = 32 * image_left.shape[2] * (sbm.SADWindowSize ** 2)
-
-    disparity = sbm.compute(image_left, image_right)
-    # print type(disparity[0][0])
-
-    disparity_visual = cv2.normalize(disparity,
-                                     alpha=weights[8],
-                                     beta=weights[9],
-                                     norm_type=cv2.cv.CV_MINMAX,
-                                     dtype=cv2.cv.CV_8U)
-    # cv2.imshow("sbm", disparity_visual)
-    # cv2.waitKey(4000)
-
-    return disparity_visual
-
-
 def disparity_map(image_left, image_right):
     """Compute the disparity images for image_left and image_right.
 
