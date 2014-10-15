@@ -105,7 +105,7 @@ def point_cloud(disparity_image, image_left, focal_length):
     h, w = image_left.shape[:2]
 
     Q = np.float32([[1, 0, 0, w / 2],
-                    [0, 1, 0, h / 2],
+                    [0, -1, 0, h / 2],
                     [0, 0, focal_length, 0],
                     [0, 0, 0, 1]])
     points = cv2.reprojectImageTo3D(disparity_image, Q)
