@@ -4,6 +4,17 @@
 - Tim Sherlock
 - Lyee Chong - lsc568 - lyeechong@gmail.com
 
-## Something
-Something something
+## Feature matching
+TODO
 
+## Rectification
+TODO
+
+## Disparity
+TODO
+
+## Point cloud
+TODO
+
+## Our own images and findings
+TODO
